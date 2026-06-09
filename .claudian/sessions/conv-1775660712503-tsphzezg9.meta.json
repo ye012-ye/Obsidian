@@ -1,0 +1,23 @@
+{
+  "id": "conv-1775660712503-tsphzezg9",
+  "providerId": "claude",
+  "title": "List items",
+  "titleGenerationStatus": "success",
+  "createdAt": 1775660712503,
+  "updatedAt": 1775670637758,
+  "lastResponseAt": 1775660971427,
+  "sessionId": "06dbe507-e6ff-46c0-9527-7b93af5d67f9",
+  "providerState": {
+    "providerSessionId": "06dbe507-e6ff-46c0-9527-7b93af5d67f9"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 4650,
+    "cacheReadInputTokens": 24352,
+    "contextWindow": 200000,
+    "contextTokens": 29003,
+    "percentage": 15,
+    "contextWindowIsAuthoritative": true
+  }
+}

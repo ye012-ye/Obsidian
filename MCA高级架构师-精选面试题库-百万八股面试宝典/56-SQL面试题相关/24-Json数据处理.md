@@ -1,0 +1,15 @@
+## **简单json处理**
+
+有如下json数据，建表并加载数据，解析json中各个属性。
+
+|  |
+| --- |
+| **#数据**  {"user\_id": "user1", "action\_type": "login", "dt": "1970-01-02"}  {"user\_id": "user2", "action\_type": "logout", "dt": "1970-01-03"}  {"user\_id": "user3", "action\_type": "wait", "dt": "1970-01-04"}  **#建表语句**  create table json\_tbl1 (  log\_json string  )  row format delimited fields terminated by '\t';  **#加载数据**  load data inpath '/data.txt' into table json\_tbl1;  **#查表中数据**  select \* from json\_tbl1;  +----------------------------------------------------+  | json\_tbl1.log\_json |  +----------------------------------------------------+  | {"user\_id": "user1", "action\_type": "login", "dt": "1970-01-02"} |  | {"user\_id": "user2", "action\_type": "logout", "dt": "1970-01-03"} |  | {"user\_id": "user3", "action\_type": "wait", "dt": "1970-01-04"} |  +----------------------------------------------------+  **#获取json属性**  SELECT  get\_json\_object(log\_json, '$.user\_id') AS user\_id,  get\_json\_object(log\_json, '$.action\_type') AS action\_type,  get\_json\_object(log\_json, '$.dt') AS dt  FROM json\_tbl1;  **#结果**  +----------+--------------+-------------+  | user\_id | action\_type | dt |  +----------+--------------+-------------+  | user1 | login | 1970-01-02 |  | user2 | logout | 1970-01-03 |  | user3 | wait | 1970-01-04 |  +----------+--------------+-------------+ |
+
+## **嵌套json处理**
+
+有如下嵌套json数据，建表加载数据，并获取json中属性值，包括嵌套json中属性的值。
+
+|  |
+| --- |
+| **#数据**  {"name":"zhangsan","score":100,"infos":{"age":20,"gender":"man"}}  {"name":"lisi","score":70,"infos":{"age":21,"gender":"femal"}}  {"name":"wangwu","score":80,"infos":{"age":23,"gender":"man"}}  {"name":"maliu","score":50,"infos":{"age":16,"gender":"femal"}}  {"name":"tianqi","score":90,"infos":{"age":19,"gender":"man"}}  **#建表语句**  create table json\_tbl2 (  json\_string string  )  row format delimited fields terminated by '\t';  **#加载数据**  load data inpath '/data.txt' into table json\_tbl2;  **#查看表中数据**  select \* from json\_tbl2;  +----------------------------------------------------+  | json\_tbl2.json\_string |  +----------------------------------------------------+  | {"name":"zhangsan","score":100,"infos":{"age":20,"gender":"man"}} |  | {"name":"lisi","score":70,"infos":{"age":21,"gender":"femal"}} |  | {"name":"wangwu","score":80,"infos":{"age":23,"gender":"man"}} |  | {"name":"maliu","score":50,"infos":{"age":16,"gender":"femal"}} |  | {"name":"tianqi","score":90,"infos":{"age":19,"gender":"man"}} |  +----------------------------------------------------+  **#获取各个属性的值**  SELECT  get\_json\_object(json\_string, '$.name') AS name,  get\_json\_object(json\_string, '$.score') AS score,  get\_json\_object(json\_string, '$.infos.age') AS age,  get\_json\_object(json\_string, '$.infos.gender') AS gender  FROM json\_tbl2;  **#结果**  +-----------+--------+------+---------+  | name | score | age | gender |  +-----------+--------+------+---------+  | zhangsan | 100 | 20 | man |  | lisi | 70 | 21 | femal |  | wangwu | 80 | 23 | man |  | maliu | 50 | 16 | femal |  | tianqi | 90 | 19 | man |  +-----------+--------+------+---------+ |

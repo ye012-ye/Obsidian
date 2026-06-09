@@ -1,0 +1,9 @@
+ReentrantLock是基于AQS实现的。
+
+在线程基于ReentrantLock加锁时，需要基于CAS去修改state属性，如果能从0改为1，代表获取锁资源成功
+
+如果CAS失败了，添加到AQS的双向链表中排队（可能会挂起线程），等待获取锁。
+
+持有锁的线程，如果执行了condition的await方法，线程会封装为Node添加到Condition的单向链表中，等待被唤醒并且重新竞争锁资源
+
+Java中除了一会讲到的线程池中Worker的锁之外，都是可重入锁。

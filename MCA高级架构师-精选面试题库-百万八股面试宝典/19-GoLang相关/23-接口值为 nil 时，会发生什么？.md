@@ -1,0 +1,2 @@
+- 接口由 (type, value) 组成。即使 value 为 nil，但 type 非 nil，也不是 nil 接口。
+- 使用 `if iface == nil` 时返回 false，可能导致运行时 panic。要判断底层值是否为 nil，还需断言或检查。

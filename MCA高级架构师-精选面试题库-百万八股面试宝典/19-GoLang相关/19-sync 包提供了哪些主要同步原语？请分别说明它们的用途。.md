@@ -1,0 +1,5 @@
+- `sync.Mutex`：互斥锁，用于保护临界区。
+- `sync.RWMutex`：读写锁，支持并发读与独占写。
+- `sync.WaitGroup`：等待一组 goroutine 完成。
+- `sync.Once`：确保某个函数只执行一次。
+- `sync.Cond`：条件变量，支持复杂的同步逻辑，如生产者/消费者。

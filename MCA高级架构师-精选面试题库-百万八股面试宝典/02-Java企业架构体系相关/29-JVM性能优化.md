@@ -1,0 +1,428 @@
+## JVM常用参数有哪些？
+
+## JVM参数
+
+### 3.1.1 标准参数
+
+```plain
+-version
+-help
+-server
+-cp
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/f03d4cc2a682ec3e.png)
+
+### 3.1.2 -X参数
+
+> 非标准参数，也就是在JDK各个版本中可能会变动
+
+```plain
+-Xint     解释执行
+-Xcomp    第一次使用就编译成本地代码
+-Xmixed   混合模式，JVM自己来决定
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/032f808b1337e16a.png)
+
+### 3.1.3 -XX参数
+
+> 使用得最多的参数类型
+>
+> 非标准化参数，相对不稳定，主要用于JVM调优和Debug
+
+```plain
+a.Boolean类型
+格式：-XX:[+-]<name>            +或-表示启用或者禁用name属性
+比如：-XX:+UseConcMarkSweepGC   表示启用CMS类型的垃圾回收器
+     -XX:+UseG1GC              表示启用G1类型的垃圾回收器
+b.非Boolean类型
+格式：-XX<name>=<value>表示name属性的值是value
+比如：-XX:MaxGCPauseMillis=500   
+```
+
+### 3.1.4 其他参数
+
+```plain
+-Xms1000M等价于-XX:InitialHeapSize=1000M
+-Xmx1000M等价于-XX:MaxHeapSize=1000M
+-Xss100等价于-XX:ThreadStackSize=100
+```
+
+> 所以这块也相当于是-XX类型的参数
+
+### 3.1.5 查看参数
+
+> java -XX:+PrintFlagsFinal -version > flags.txt
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/a936b4442f69ede4.png)
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/8d9e804bd3530051.png)
+
+> 值得注意的是"="表示默认值，":="表示被用户或JVM修改后的值  
+> 要想查看某个进程具体参数的值，可以使用jinfo，这块后面聊  
+> 一般要设置参数，可以先查看一下当前参数是什么，然后进行修改
+
+### 3.1.6 设置参数的常见方式
+
+- 开发工具中设置比如IDEA，eclipse
+
+- 运行jar包的时候:java -XX:+UseG1GC xxx.jar
+
+- web容器比如tomcat，可以在脚本中的进行设置
+
+- 通过jinfo实时调整某个java进程的参数(参数只有被标记为manageable的flags可以被实时修改)
+
+### 3.1.7 实践和单位换算
+
+```plain
+1Byte(字节)=8bit(位)
+1KB=1024Byte(字节)
+1MB=1024KB
+1GB=1024MB
+1TB=1024GB
+```
+
+```plain
+(1)设置堆内存大小和参数打印
+-Xmx100M -Xms100M -XX:+PrintFlagsFinal
+(2)查询+PrintFlagsFinal的值
+:=true
+(3)查询堆内存大小MaxHeapSize
+:= 104857600
+(4)换算
+104857600(Byte)/1024=102400(KB)
+102400(KB)/1024=100(MB)
+(5)结论
+104857600是字节单位
+```
+
+### 3.1.8 常用参数含义
+
+|  |  |  |
+| --- | --- | --- |
+| 参数 | 含义 | 说明 |
+| -XX:CICompilerCount=3 | 最大并行编译数 | 如果设置大于1，虽然编译速度会提高，但是同样影响系统稳定性，会增加JVM崩溃的可能 |
+| -XX:InitialHeapSize=100M | 初始化堆大小 | 简写-Xms100M |
+| -XX:MaxHeapSize=100M | 最大堆大小 | 简写-Xms100M |
+| -XX:NewSize=20M | 设置年轻代的大小 |  |
+| -XX:MaxNewSize=50M | 年轻代最大大小 |  |
+| -XX:OldSize=50M | 设置老年代大小 |  |
+| -XX:MetaspaceSize=50M | 设置方法区大小 |  |
+| -XX:MaxMetaspaceSize=50M | 方法区最大大小 |  |
+| -XX:+UseParallelGC | 使用UseParallelGC | 新生代，吞吐量优先 |
+| -XX:+UseParallelOldGC | 使用UseParallelOldGC | 老年代，吞吐量优先 |
+| -XX:+UseConcMarkSweepGC | 使用CMS | 老年代，停顿时间优先 |
+| -XX:+UseG1GC | 使用G1GC | 新生代，老年代，停顿时间优先 |
+| -XX:NewRatio | 新老生代的比值 | 比如-XX:Ratio=4，则表示新生代:老年代=1:4，也就是新生代占整个堆内存的1/5 |
+| -XX:SurvivorRatio | 两个S区和Eden区的比值 | 比如-XX:SurvivorRatio=8，也就是(S0+S1):Eden=2:8，也就是一个S占整个新生代的1/10 |
+| -XX:+HeapDumpOnOutOfMemoryError | 启动堆内存溢出打印 | 当JVM堆内存发生溢出时，也就是OOM，自动生成dump文件 |
+| -XX:HeapDumpPath=heap.hprof | 指定堆内存溢出打印目录 | 表示在当前目录生成一个heap.hprof文件 |
+| -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -Xloggc:g1-gc.log | 打印出GC日志 | 可以使用不同的垃圾收集器，对比查看GC情况 |
+| -Xss128k | 设置每个线程的堆栈大小 | 经验值是3000-5000最佳 |
+| -XX:MaxTenuringThreshold=6 | 提升年老代的最大临界值 | 默认值为 15 |
+| -XX:InitiatingHeapOccupancyPercent | 启动并发GC周期时堆内存使用占比 | G1之类的垃圾收集器用它来触发并发GC周期,基于整个堆的使用率,而不只是某一代内存的使用比. 值为 0 则表示”一直执行GC循环”. 默认值为 45. |
+| -XX:G1HeapWastePercent | 允许的浪费堆空间的占比 | 默认是10%，如果并发标记可回收的空间小于10%,则不会触发MixedGC。 |
+| -XX:MaxGCPauseMillis=200ms | G1最大停顿时间 | 暂停时间不能太小，太小的话就会导致出现G1跟不上垃圾产生的速度。最终退化成Full GC。所以对这个参数的调优是一个持续的过程，逐步调整到最佳状态。 |
+| -XX:ConcGCThreads=n | 并发垃圾收集器使用的线程数量 | 默认值随JVM运行的平台不同而不同 |
+| -XX:G1MixedGCLiveThresholdPercent=65 | 混合垃圾回收周期中要包括的旧区域设置占用率阈值 | 默认占用率为 65% |
+| -XX:G1MixedGCCountTarget=8 | 设置标记周期完成后，对存活数据上限为 G1MixedGCLIveThresholdPercent 的旧区域执行混合垃圾回收的目标次数 | 默认8次混合垃圾回收，混合回收的目标是要控制在此目标次数以内 |
+| -XX:G1OldCSetRegionThresholdPercent=1 | 描述Mixed GC时，Old Region被加入到CSet中 | 默认情况下，G1只把10%的Old Region加入到CSet中 |
+|  |  |  |
+
+## JVM常用命令有哪些
+
+### jps
+
+> 查看java进程
+
+```plain
+The jps command lists the instrumented Java HotSpot VMs on the target system. The command is limited to reporting information on JVMs for which it has the access permissions.
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/208dc8ad58da24aa.png)
+
+### jinfo
+
+> （1）实时查看和调整JVM配置参数
+
+```plain
+The jinfo command prints Java configuration information for a specified Java process or core file or a remote debug server. The configuration information includes Java system properties and Java Virtual Machine (JVM) command-line flags.
+```
+
+> （2）查看用法
+>
+> jinfo -flag name PID 查看某个java进程的name属性的值
+
+```plain
+jinfo -flag MaxHeapSize PID 
+jinfo -flag UseG1GC PID
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/d5f90bcefa35071d.png)
+
+> （3）修改
+>
+> **参数只有被标记为manageable的flags可以被实时修改**
+
+```plain
+jinfo -flag [+|-] PID
+jinfo -flag <name>=<value> PID
+```
+
+> （4）查看曾经赋过值的一些参数
+
+```plain
+jinfo -flags PID
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/1ad51a20b8852947.png)
+
+### jstat
+
+> （1）查看虚拟机性能统计信息
+
+```plain
+The jstat command displays performance statistics for an instrumented Java HotSpot VM. The target JVM is identified by its virtual machine identifier, or vmid option.
+```
+
+> （2）查看类装载信息
+
+```plain
+jstat -class PID 1000 10   查看某个java进程的类装载信息，每1000毫秒输出一次，共输出10次
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/a09d053bbfe78c05.png)
+
+> （3）查看垃圾收集信息
+
+```plain
+jstat -gc PID 1000 10
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/66978773403e5dcb.png)
+
+### jstack
+
+> （1）查看线程堆栈信息
+
+```plain
+The jstack command prints Java stack traces of Java threads for a specified Java process, core file, or remote debug server.
+```
+
+> （2）用法
+
+```plain
+jstack PID
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/3d15f1b489195a2c.png)
+
+> (4)排查死锁案例
+
+- DeadLockDemo
+
+```java
+//运行主类
+public class DeadLockDemo
+{
+    public static void main(String[] args)
+    {
+        DeadLock d1=new DeadLock(true);
+        DeadLock d2=new DeadLock(false);
+        Thread t1=new Thread(d1);
+        Thread t2=new Thread(d2);
+        t1.start();
+        t2.start();
+    }
+}
+//定义锁对象
+class MyLock{
+    public static Object obj1=new Object();
+    public static Object obj2=new Object();
+}
+//死锁代码
+class DeadLock implements Runnable{
+    private boolean flag;
+    DeadLock(boolean flag){
+        this.flag=flag;
+    }
+    public void run() {
+        if(flag) {
+            while(true) {
+                synchronized(MyLock.obj1) {
+                    System.out.println(Thread.currentThread().getName()+"----if获得obj1锁");
+                    synchronized(MyLock.obj2) {
+                        System.out.println(Thread.currentThread().getName()+"----if获得obj2锁");
+                    }
+                }
+            }
+        }
+        else {
+            while(true){
+                synchronized(MyLock.obj2) {
+                    System.out.println(Thread.currentThread().getName()+"----否则获得obj2锁");
+                    synchronized(MyLock.obj1) {
+                        System.out.println(Thread.currentThread().getName()+"----否则获得obj1锁");
+
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+- 运行结果
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/c3a2b20ceeb960b0.png)
+
+- jstack分析
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/7489cf46b2d06b98.png)
+
+> 把打印信息拉到最后可以发现
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/5cd38d8fa1811508.png)
+
+### jmap
+
+> （1）生成堆转储快照
+
+```plain
+The jmap command prints shared object memory maps or heap memory details of a specified process, core file, or remote debug server.
+```
+
+> （2）打印出堆内存相关信息
+
+```plain
+jmap -heap PID
+```
+
+```plain
+jinfo -flag UsePSAdaptiveSurvivorSizePolicy 35352
+-XX:SurvivorRatio=8
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/783009c5e0f4bfc0.png)
+
+> （3）dump出堆内存相关信息
+
+```plain
+jmap -dump:format=b,file=heap.hprof PID
+```
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/a621b0472386dddb.png)
+
+> （4）要是在发生堆内存溢出的时候，能自动dump出该文件就好了
+
+一般在开发中，JVM参数可以加上下面两句，这样内存溢出时，会自动dump出该文件
+
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heap.hprof+\*
+
+```plain
+设置堆内存大小: -Xms20M -Xmx20M
+启动，然后访问localhost:9090/heap，使得堆内存溢出
+```
+
+## **亿级流量电商系统JVM调优**
+
+### **亿级流量系统**
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/7ec512b20e024321.png)
+
+亿级流量系统，其实就是每天点击量在亿级的系统，根据淘宝的一个官方的数据分析。
+
+每个用户一次浏览点击20~40次之间，推测出每日活跃用户（日活用户）在500万左右。
+
+同时结合淘宝的一个点击数据，可以发现，能够付费的也就是橙色的部分（cart）的用户，比例只有10%左右。
+
+90%的用户仅仅是浏览，那么我们可以通过图片缓存、Redis缓存等技术，我们可以把90%的用户解决掉。
+
+10%的付费用户，大概算出来是每日成交50万单左右。
+
+![](../assets/8a8696f29039c030.png)
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/2fd78cf626ccb72d.png)
+
+#### **GC**预估
+
+如果是普通业务，一般处理时间比较平缓，大概在3,4个小时处理，算出来每秒只有几十单，这个一般的应用可以处理过来（不需要JVM预估调优）
+
+另外电商系统中有大促场景（秒杀、限时抢购等），一般这种业务是几种在几分钟。我们算出来大约每秒2000单左右的数据，
+
+承受大促场景的使用4台服务器（使用负载均衡）。每台订单服务器也就是大概500单/秒
+
+我们测试发现，每个订单处理过程中会占据0.2MB大小的空间（什么订单信息、优惠券、支付信息等等），那么一台服务器每秒产生100M的内存空间，这些对象基本上都是朝生夕死，也就是1秒后都会变成垃圾对象。
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/19afb46a8a2ca269.png)
+
+加入我们设置堆的空间最大值为3个G，我们按照默认情况下的设置，新生代1/3的堆空间，老年代2/3的堆空间。Eden:S0:S1=8:1:1
+
+我们推测出，old区=2G,Eden区=800M,S0=S1=100M
+
+根据对象的分配原则（对象优先在Eden区进行分配），由此可得，8秒左右Eden区空间满了。
+
+每8秒触发一个MinorGC（新生代垃圾回收），这次MinorGC时，JVM要STW，但是这个时候有100M的对象是不能回收的（线程暂停，对象需要1秒后都会变成垃圾对象），那么就会有100M的对象在本次不能被回收（只有下次才能被回收掉）
+
+所以经过本次垃圾回收后。本次存活的100M对象会进入S0区，但是由于另外一个JVM对象分配原则（如果在Survivor空间中相同年龄所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代，无须等到MaxTenuringThreshold中要求的年龄）
+
+所以这样的对象本质上不会进去Survivor区，而是进入老年代
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/80e2d8c881b3a01e.png)
+
+*(⚠️ 图片缺失:源知识库原图已失效)*
+
+所以我们推算，大概每个8秒会有100M的对象进入老年代。大概20\*8=160秒，也就是2分40秒左右old区就会满掉，就会触发一次FullGC,一般来说，这次FullGC是可以避免的，同时由于FullGC不单单回收老年代+新生代，还要回收元空间，这些FullGC的时间可能会比较长（老年代回收的朝生夕死的对象，使用标记清除/标记整理算法决定了效率并不高,同时元空间也要回收一次，进一步加大GC时间）。
+
+所以问题的根本就是做到如何避免没有必要的FullGC
+
+#### **GC****预估****调优**
+
+我们在项目中加入VM参数：
+
+-Xms3072M -Xmx3072M -Xmn2048M -XX:SurvivorRatio=7
+
+-Xss256K -XX:MetaspaceSize= 128M -XX:MaxMetaspaceSize= 128M
+
+-XX:MaxTenuringThreshold=2
+
+-XX:ParallelGCThreads=8
+
+-XX:+UseConcMarkSweepGC
+
+1、首先看一下堆空间：old区=1G，Eden区=1.4G,S0=S1=300M
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/1e36fb92f0237eb3.png)
+
+1、那么第一点，Eden区大概需要14秒才能填满，填满之后，100M的存活对象会进入S0区（由于这个区域变大，不会触发动态年龄判断）
+
+*(⚠️ 图片缺失:源知识库原图已失效)*
+
+2、再过14秒，Eden区，填满之后，还是剩余100M的对象要进入S1区。但是由于原来的100M已经是垃圾了（过了14秒了），所以，S1也只会有Eden区过来的100M对象，S0的100M已经别回收，也不会触发动态年龄判断。
+
+*(⚠️ 图片缺失:源知识库原图已失效)*![](../assets/bfcde4018ef484e8.png)
+
+*(⚠️ 图片缺失:源知识库原图已失效)*
+
+3、反反复复，这样就没有对象会进入old区，就不会触发FullGC,同时我们的MinorGC的频次也由之前的8秒变为14秒，虽然空间加大，但是换来的还是GC的总时间会减少。
+
+![](../assets/8f7574bb2c87793e.png)
+
+4、-Xss256K -XX:MetaspaceSize= 128M -XX:MaxMetaspaceSize= 128M 栈一般情况下很少用到1M。所以为了线程占用内存更少，我们可以减少到256K
+
+元空间一般启动后就不会有太多的变化，我们可以设定为128M，节约内存空间。
+
+5、-XX:MaxTenuringThreshold=2 这个是分代年龄（年龄为2就可以进入老年代），因为我们基本上都使用的是Spring架构，Spring中很多的bean是长期要存活的，没有必要在Survivor区过渡太久，所以可以设定为2，让大部分的Spring的内部的一些对象进入老年代。
+
+6、-XX:ParallelGCThreads=8 线程数可以根据你的服务器资源情况来设定（要速度快的话可以设置大点，根据CPU的情况来定，一般设置成CPU的整数倍）
+
+*(⚠️ 图片缺失:源知识库原图已失效)*
+
+7、-XX:+UseConcMarkSweepGC 因为这个业务响应时间优先的，所以还是可以使用CMS垃圾回收器或者G1垃圾回收器。
+
+![](../assets/c32440641deafa35.png)
+
+8、-XX:+UseConcMarkSweepGC 因为这个业务响应时间优先的，所以还是可以使用CMS垃圾回收器或者G1垃圾回收器。
+
+![](../assets/dd29e22e8b13f7d0.png)

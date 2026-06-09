@@ -1,0 +1,7 @@
+在Spring框架中，BeanFactory和FactoryBean就不是一个东西，名字看着像一点。
+
+首先这哥俩都是接口。
+
+其中BeanFactory其实就是咱们一直在说的Spring容器，Spring工厂，IOC容器…………这个BeanFactory就是在帮助咱们创建和管理bean的实例。
+
+FactoryBean是一个特殊的bean对象，构建的时候指定的是某一个工厂里的某一个方法返回的对象才是咱们要管理的对象。

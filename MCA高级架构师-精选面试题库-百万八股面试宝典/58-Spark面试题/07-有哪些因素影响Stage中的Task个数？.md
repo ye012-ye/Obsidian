@@ -1,0 +1,1 @@
+Spark划分Stage过程中如果Stage源头读取的是HDFS中的数据，开始设置的分区数会影响Stage中task个数，如果该Stage之前还有Stage，影响该Stage task个数是shuffle操作算子的并行度，无论怎样，一个Stage的最终task个数由该Stage 末端RDD分区个数决定。

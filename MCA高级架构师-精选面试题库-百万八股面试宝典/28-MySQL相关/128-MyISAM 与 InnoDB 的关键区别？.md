@@ -1,0 +1,6 @@
+- **索引存储方式**：InnoDB 用聚簇索引、MyISAM 用非聚集；
+- **事务与锁**：InnoDB 支持事务与行锁，MyISAM 不支持事务，仅表锁；
+- **外键**：InnoDB 支持，MyISAM 不支持；
+- **全文索引**：MyISAM 一直支持，InnoDB 在 5.6 之前不支持；
+- **行数统计**：MyISAM 快速查询 count(\*)，InnoDB 要扫描全表；
+- 总体：InnoDB 更可靠、性能更均衡，是现代 MySQL 的默认选择。

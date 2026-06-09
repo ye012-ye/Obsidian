@@ -1,0 +1,2 @@
+- Go 的 struct 对成员进行了内存对齐，会插入 padding 导致实际大小 > 成员之和。
+- 使用 `unsafe.Sizeof(myStruct)` 查看实际字节数。需要在高频场景避免过度对齐浪费空间。

@@ -1,0 +1,23 @@
+{
+  "id": "conv-1775660578675-tbq62us7t",
+  "providerId": "claude",
+  "title": "List Claude Code commands with descriptions",
+  "titleGenerationStatus": "success",
+  "createdAt": 1775660578679,
+  "updatedAt": 1775670633359,
+  "lastResponseAt": 1775660718855,
+  "sessionId": "c76346d2-3ab1-4136-b9fc-576beca51ff9",
+  "providerState": {
+    "providerSessionId": "c76346d2-3ab1-4136-b9fc-576beca51ff9"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 1838,
+    "cacheReadInputTokens": 20509,
+    "contextWindow": 200000,
+    "contextTokens": 22348,
+    "percentage": 11,
+    "contextWindowIsAuthoritative": true
+  }
+}

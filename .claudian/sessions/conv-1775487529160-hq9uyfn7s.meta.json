@@ -1,0 +1,23 @@
+{
+  "id": "conv-1775487529160-hq9uyfn7s",
+  "providerId": "claude",
+  "title": "Interpret ambiguous numeric input",
+  "titleGenerationStatus": "success",
+  "createdAt": 1775487529161,
+  "updatedAt": 1775575685538,
+  "lastResponseAt": 1775575478237,
+  "sessionId": "7bb130ba-fd19-4a26-9973-dfa0b7df0cd6",
+  "providerState": {
+    "providerSessionId": "7bb130ba-fd19-4a26-9973-dfa0b7df0cd6"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 227,
+    "cacheReadInputTokens": 161650,
+    "contextWindow": 200000,
+    "contextTokens": 161878,
+    "percentage": 81,
+    "contextWindowIsAuthoritative": true
+  }
+}

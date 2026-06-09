@@ -1,0 +1,23 @@
+{
+  "id": "conv-1775621043163-3vgoxrkmq",
+  "providerId": "claude",
+  "title": "Create Spring AI Alibaba agent flowchart",
+  "titleGenerationStatus": "success",
+  "createdAt": 1775621043164,
+  "updatedAt": 1775660473110,
+  "lastResponseAt": 1775621685807,
+  "sessionId": "68d8abb3-18e9-4d4f-830a-4b4211a2304a",
+  "providerState": {
+    "providerSessionId": "68d8abb3-18e9-4d4f-830a-4b4211a2304a"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 240,
+    "cacheReadInputTokens": 35139,
+    "contextWindow": 200000,
+    "contextTokens": 35380,
+    "percentage": 18,
+    "contextWindowIsAuthoritative": true
+  }
+}

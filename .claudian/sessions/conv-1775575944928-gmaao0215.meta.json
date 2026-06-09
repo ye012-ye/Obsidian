@@ -1,0 +1,23 @@
+{
+  "id": "conv-1775575944928-gmaao0215",
+  "providerId": "claude",
+  "title": "给mysql redis 锁 jvm画一个图",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1775575944928,
+  "updatedAt": 1775620924656,
+  "lastResponseAt": 1775578386812,
+  "sessionId": "8da72d91-7a65-4c24-829b-b3dc68937df3",
+  "providerState": {
+    "providerSessionId": "8da72d91-7a65-4c24-829b-b3dc68937df3"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 11131,
+    "cacheReadInputTokens": 20000,
+    "contextWindow": 200000,
+    "contextTokens": 31132,
+    "percentage": 16,
+    "contextWindowIsAuthoritative": true
+  }
+}

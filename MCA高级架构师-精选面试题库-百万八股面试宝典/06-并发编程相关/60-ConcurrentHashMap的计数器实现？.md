@@ -1,0 +1,13 @@
+ConcurrentHashMap用的LongAdder来保证线程安全的。
+
+LongAdder底层就是基于CAS的方式，在做+1和-1操作，自然能保证线程安全。
+
+但是AtmoicLong也能保证线程安全，为啥不用AtmoicLong呢？
+
+比如ConcurrentHashMap中记录元素个数的是baseCount，如果有大量线程都想修改baseCount，基于CAS的方式，每次并发只会有一个线程成功，其他失败的线程需要再次获取baseCount的值，再执行CAS…………AtmoicLong就是这种方式，会导致性能变慢，而且空转的CAS操作，会浪费CPU的性能资源。
+
+LongAdder解决上述问题的方式很简单，不让每个线程都对baseCount做CAS操作，LongAdder中提供了很多的CounterCell对象，每个CounterCell内部都有一个long类型的value，线程在做计数时，可以随机选择一个CounterCell对象对内部的value做+1操作。
+
+CounterCell数组的长度最长和你的CPU内核数一致。 CAS是CPU密集操作，和CPU内核数 ± 1 正好~
+
+baseCount + 所有CounterCell对象的value，最终结果是ConcurrentHashMap中的元素个数。

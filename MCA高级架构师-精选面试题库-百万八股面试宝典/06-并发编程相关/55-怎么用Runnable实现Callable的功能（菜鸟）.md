@@ -1,0 +1,13 @@
+本质就是问的FutureTask。
+
+Runnable和Callable的区别无非就是能否抛异常，是否可以返回一个结果。
+
+可以很直观的看到Runnable和Callale在源码中的区别。
+
+但是Callable如何执行的啊？？
+
+Callable本质需要基于FutureTask去执行，而在FutureTask里，有一个成员变量outcome，任务执行过程的异常或者是返回结果，都会被封装到outcome中，放执行者需要结果时，get方法会返回outcome中存储的内容。
+
+可以在实现Runnable接口时，也声明类似的成员变量，当run方法执行时，整个try-catch住，如果出现异常信息，就将异常封装到这个成员变量中。如果正常执行完，有结果需要返回，就将需要返回的结果扔到成员变量中。
+
+如果你对FutureTask比较了解，你还可以再聊一下给任务追加一个状态，避免任务并发投递时，带来的并发问题。

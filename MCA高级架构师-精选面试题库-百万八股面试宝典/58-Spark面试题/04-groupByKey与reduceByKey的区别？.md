@@ -1,0 +1,7 @@
+groupByKey和reduceByKey都可以用于对RDD中的键值对进行分组，groupByKey没有map端预聚合，reduceByKey会进行map端聚合操作，两者特点如下:
+
+groupByKey操作将RDD中所有具有相同键的键值对分组到一起，返回的是(key, Iterable<value>)类型的RDD,这种方式会导致在处理大量数据时，由于将具有相同键的键值对都放在同一个分区中，导致该分区的数据会很大，从而影响性能。
+
+reduceByKey操作先将RDD中具有相同键的键值对聚合到一起，然后对每个键的所有值进行归约操作，返回的是(key, reduced\_value)类型的RDD。这种方式可以在每个分区中聚合相同键的键值对，减少了网络传输的数据量，更适合处理大量数据。
+
+当需要对数据按照key进行分组操作时，如果数据量不大，使用groupByKey；如果对相同key数据分组后再聚合的场景建议使用reduceByKey以提高性能。

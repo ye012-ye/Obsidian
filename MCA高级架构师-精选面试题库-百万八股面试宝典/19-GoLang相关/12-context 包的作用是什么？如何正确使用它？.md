@@ -1,0 +1,3 @@
+- `context` 用于控制 goroutine 生命周期、传递取消信号和传递 request-scoped 数据。
+- 创建方式：`context.Background()`, `context.TODO()`, 或 `context.WithCancel`, `context.WithDeadline`, `context.WithTimeout`。
+- 使用场景：HTTP 服务、数据库请求、并发任务等。

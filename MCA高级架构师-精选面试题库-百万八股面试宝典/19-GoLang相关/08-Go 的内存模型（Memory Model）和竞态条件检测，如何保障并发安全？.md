@@ -1,0 +1,3 @@
+- Go 运行时提供 `-race` 开关检测竞态条件。
+- 通过内存模型保证 goroutine 与内存同步前后关系。
+- 数据共享需要同步原语（Mutex、channel、atomic），否则运行时竞态会导致 undefined 行为。

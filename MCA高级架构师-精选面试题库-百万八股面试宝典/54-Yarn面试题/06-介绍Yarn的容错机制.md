@@ -1,0 +1,7 @@
+Yarn的容错涉及到ResourceManager、NodeManager、ApplicationMaster、Container、任务Task执行相关容错。
+
+- **ResourceManager容错**：ResourceManager搭建可以采用Active/Standby主备模式，确保在Active ResourceManager发生故障时，Standby ResourceManager接管工作，避免RM的单点故障。
+- **NodeManager容错**：NodeManager定期向ResourceManager发送心跳信息，RM如果在指定时间内未收到心跳（心跳间隔参数yarn.resourcemanager.nodemanagers.heartbeat-interval-ms，默认1s），则认为NM失效，RM会将失效NM上的所有Container标记为失败，并通知相应的ApplicationMaster,由AM决定如何处理这些失败的任务。
+- **ApplicationMaster容错**:ResourceManager会监控ApplicationMaster运行状态，当检测到AM失败时，RM会为其重新分配资源并重启，ApplicationMaster启动重试次数由yarn.resourcemanager.am.max-attempts参数决定（默认2），当超过重试次数时，Application才真正失败。
+- **Container容错**：Container是任务执行的基本单元，当一个Container在运行过程中发生故障时，NodeManager会将该Container的状态和退出码通过心跳信息上报给ResourceManager，RM接收到这些信息后，会将失败的Container信息传递给对应的ApplicationMaster，ApplicationMaster可以为该任务申请新的Container并重新执行。
+- **任务Task执行容错**：当Job由于代码异常或资源不足等原因失败时，ApplicationMaster会尝试重新调度该任务。默认情况下，每个Task任务最多重试4次（可通过参数mapreduce.map.maxattempts和mapreduce.reduce.maxattempts进行配置）。如果任务的失败次数超过设定的阈值，AM将不再重新调度该任务，并视整个作业为失败。
