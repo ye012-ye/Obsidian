@@ -1,5 +1,33 @@
 # mysql基本原理 主讲人：严镇涛
 
+<!-- readability-enhancement:start -->
+> [!abstract] 速读地图
+> 这篇是 MySQL 底层入门：日志、Buffer Pool、执行流程和 B+ 树索引是主线。
+>
+> **本篇关键词：** <span style="color:#059669;font-weight:700">MySQL</span> ・ <span style="color:#059669;font-weight:700">binlog</span> ・ <span style="color:#059669;font-weight:700">Buffer Pool</span> ・ <span style="color:#059669;font-weight:700">redo log</span> ・ <span style="color:#059669;font-weight:700">B+树</span> ・ <span style="color:#059669;font-weight:700">SQL执行流程</span>
+>
+> **优先扫这些问题：**
+> - Bin log是什么，有什么用？/如何做数据库的数据恢复?
+> - 什么是预读？什么是预读取？
+> - 什么是Buffer Pool？ 聊到性能优化的一个点
+> - Buffer Pool的内存淘汰策略
+> - Redo Log跟Buffer Pool的关系 重做日志 持久性
+> - Mysql的体系结构是什么样子的（一条查询语句它到底是怎么执行的？）
+> - 一条更新语句要经历那些流程
+> - 为什么Mysql要使用B+树做为索引 B树
+
+> [!success] 面试背诵小结
+> - 回答时用「定义 -> 原理 -> 场景 -> 坑点」四段式，能显得更稳。
+> - 二刷时先看上面的关键词，再回到正文找例子和代码。
+> - 真被追问时，优先把相似概念做对比，而不是继续堆定义。
+
+> [!warning] 易混提醒
+> 易混：binlog 偏归档/复制，redo log 偏崩溃恢复；Buffer Pool 是内存缓存，不是持久化日志。
+<!-- readability-enhancement:end -->
+
+---
+
+
 ## Bin log是什么，有什么用？/如何做数据库的数据恢复?
 
 1.bin Log: 数据恢复 主从复制
@@ -388,3 +416,5 @@ myd data
 聚集索引 二级索引
 
 新华字典 目录 拼音 偏旁 五笔 XXXX
+
+

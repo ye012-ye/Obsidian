@@ -1,5 +1,33 @@
 # mysql事务与锁 主讲人：严镇涛
 
+<!-- readability-enhancement:start -->
+> [!abstract] 速读地图
+> 围绕「事务定义 -> ACID -> 并发问题 -> 隔离级别 -> MVCC/锁」组织答案。
+>
+> **本篇关键词：** <span style="color:#059669;font-weight:700">MySQL</span> ・ <span style="color:#059669;font-weight:700">ACID</span> ・ <span style="color:#059669;font-weight:700">隔离级别</span> ・ <span style="color:#059669;font-weight:700">MVCC</span> ・ <span style="color:#059669;font-weight:700">undo/redo log</span> ・ <span style="color:#dc2626;font-weight:700">锁</span>
+>
+> **优先扫这些问题：**
+> - 什么是数据库的事务？
+> - 哪些存储引擎支持事务
+> - 事务的四大特性
+> - 那么数据库什么时候会出现事务呢？
+> - 事务并发会带来什么问题？
+> - 拓展题：SQL92标准（时间不够就不讲，大家自己看）
+> - Mysql的innoDB存储引擎对于隔离级别的支持
+> - 如何解决数据的读一致性问题
+
+> [!success] 面试背诵小结
+> - 回答时用「定义 -> 原理 -> 场景 -> 坑点」四段式，能显得更稳。
+> - 二刷时先看上面的关键词，再回到正文找例子和代码。
+> - 真被追问时，优先把相似概念做对比，而不是继续堆定义。
+
+> [!warning] 易混提醒
+> 易混：脏读、不可重复读、幻读分别对应未提交读、已提交修改、范围新增；MVCC 主要解决读一致性。
+<!-- readability-enhancement:end -->
+
+---
+
+
 ## 1.什么是数据库的事务？
 
 下单 订单表 物流表 资金表
@@ -998,3 +1026,5 @@ EXPLAIN select t.tid from teacher t join course c on t.tid = c.tid group by t.ti
 模拟优化器执行 SQL 查询语句的过程，来知道 MySQL 是怎么处理一条 SQL 语句的。通过这种方式我们可以分析语句或者表的性能瓶颈。
 
 分析出问题之后，就是对 SQL 语句的具体优化。
+
+

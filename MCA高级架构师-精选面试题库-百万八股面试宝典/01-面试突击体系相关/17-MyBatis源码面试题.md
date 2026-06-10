@@ -1,5 +1,33 @@
 # MyBatis源码面试题
 
+<!-- readability-enhancement:start -->
+> [!abstract] 速读地图
+> 这篇看 MyBatis 执行链路：配置解析、SqlSession、Executor、Mapper 代理、缓存和插件。
+>
+> **本篇关键词：** <span style="color:#7c3aed;font-weight:700">MyBatis</span> ・ <span style="color:#7c3aed;font-weight:700">SqlSession</span> ・ <span style="color:#7c3aed;font-weight:700">Executor</span> ・ <span style="color:#7c3aed;font-weight:700">Mapper代理</span> ・ <span style="color:#7c3aed;font-weight:700">一级/二级缓存</span> ・ <span style="color:#7c3aed;font-weight:700">插件</span>
+>
+> **优先扫这些问题：**
+> - 介绍下你对MyBatis源码的理解
+> - 谈谈你对MyBatis中缓存的理解
+> - 现在都是分布式环境，MyBatis如何实现三级缓存？
+> - 谈谈你对日志模块的理解
+> - 谈谈你对SqlSessionFactory的理解
+> - 谈谈你对SqlSession的理解
+> - 谈谈你对MyBatis中的Executor的源码理解
+> - MyBatis中是如何对占位符进行赋值的？
+
+> [!success] 面试背诵小结
+> - 回答时用「定义 -> 原理 -> 场景 -> 坑点」四段式，能显得更稳。
+> - 二刷时先看上面的关键词，再回到正文找例子和代码。
+> - 真被追问时，优先把相似概念做对比，而不是继续堆定义。
+
+> [!warning] 易混提醒
+> 易混：SqlSession 不是线程安全对象；一级缓存跟 SqlSession 绑定，二级缓存跟 namespace 绑定。
+<!-- readability-enhancement:end -->
+
+---
+
+
 # 一、介绍下你对MyBatis源码的理解
 
 ORM框架：CRUD操作
@@ -87,3 +115,5 @@ Configuration：全局配置。映射文件解析的内容都保存在Configurat
 1。插件的作用： 分页 SQL检查
 
 2。插件的原理
+
+
