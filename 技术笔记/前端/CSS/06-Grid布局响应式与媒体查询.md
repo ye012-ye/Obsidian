@@ -37,6 +37,49 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 
 `fr` 表示剩余空间份额。`1fr 1fr 1fr` 就是三等分。
 
+## Grid 关键字认知
+
+> [!info] Grid 是“先画格子，再把元素放进格子”
+> Flex 更像排队，Grid 更像画表格。你先定义列和行，再让子元素落到对应网格里。
+
+### grid container / grid item
+
+写了 `display: grid` 的元素就是 Grid 容器，它的直接子元素就是 Grid 子项。
+
+### `grid-template-columns`
+
+定义有几列，每列多宽。
+
+```css
+.cards {
+  grid-template-columns: 240px 1fr;
+}
+```
+
+人话：第一列 240px，第二列吃剩余空间。
+
+### `grid-template-rows`
+
+定义有几行，每行多高。
+
+```css
+.layout {
+  grid-template-rows: 64px 1fr;
+}
+```
+
+人话：第一行 64px，第二行吃剩余高度。
+
+### `fr`
+
+`fr` 是 Grid 里的份额单位。
+
+```css
+grid-template-columns: 1fr 2fr;
+```
+
+剩余空间分成 3 份，第一列 1 份，第二列 2 份。
+
 ## `repeat`
 
 ```css
@@ -48,6 +91,8 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 ```
 
 等价于 `1fr 1fr 1fr`。
+
+关键词认知：`repeat()` 只是少写重复代码，不改变 Grid 本质。
 
 ## `minmax`
 
@@ -79,6 +124,17 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 
 > [!success] 这是卡片网格神级模板
 > 个人主页、后台卡片、文章列表、商品列表，都可以先从这个模板开始。
+
+关键词认知：
+
+| 关键字 | 人话解释 |
+|---|---|
+| `minmax(0, 1fr)` | 最小允许压到 0，最大吃 1 份空间 |
+| `minmax(240px, 1fr)` | 最小 240px，最大吃剩余空间 |
+| `auto-fit` | 自动计算能放几列，空列会收起来 |
+| `auto-fill` | 自动计算能放几列，但倾向保留空列位置 |
+
+做自适应卡片时，先用 `auto-fit`，更符合“有几张卡就铺几张”的直觉。
 
 ## 页面骨架布局
 
@@ -165,6 +221,38 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 
 媒体查询可以按视口宽度调整布局。
 
+## 响应式关键字认知
+
+### viewport
+
+视口就是浏览器当前可见区域。手机端、桌面端最直接的差异就是视口宽度不同。
+
+HTML 里通常要有：
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+没有它，移动端页面可能按桌面宽度缩放，导致字体小、布局怪。
+
+### media query
+
+媒体查询是“满足条件时才生效的一段 CSS”。
+
+```css
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
+```
+
+人话：屏幕宽度不超过 768px 时，隐藏侧边栏。
+
+### breakpoint
+
+断点是布局发生变化的宽度。真正项目里，断点应该由内容决定。如果卡片在 880px 开始挤，就在 880px 附近调整，不必硬套某个框架断点。
+
 ## 移动优先写法
 
 移动优先是先写小屏样式，再用 `min-width` 增强大屏。
@@ -193,6 +281,8 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 > [!success] 推荐移动优先
 > 现在用户大量来自移动端。先保证小屏可读，再增强大屏布局，通常更稳。
 
+关键词认知：移动优先不是“只做手机”，而是默认样式先适配小屏，再通过 `@media (min-width: ...)` 往大屏增加列数、留白和复杂布局。
+
 ## 响应式常见策略
 
 1. 容器最大宽度：`max-width` + `margin: 0 auto`。
@@ -213,4 +303,3 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 ## 一句话总结
 
 > Flex 管一条轴，Grid 管行列二维空间；响应式不是写很多断点，而是让布局天然有弹性。
-

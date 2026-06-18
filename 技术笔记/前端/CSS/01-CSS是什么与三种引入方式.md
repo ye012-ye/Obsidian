@@ -50,6 +50,100 @@ description: 理解 CSS 的职责、语法结构、三种引入方式、基础�
 
 这个规则表示：找到 class 是 `card` 的元素，然后给它设置内边距、边框、圆角和背景色。
 
+## 语法关键字认知
+
+> [!info] 先把 CSS 一句话拆开
+> CSS 的一条规则可以读成：用 selector 选中元素，然后用 declaration 声明它的样子。声明里面左边是 property，右边是 value。
+
+### selector：选择器
+
+选择器回答的问题是：这条 CSS 要作用到谁身上？
+
+```css
+.profile-card {
+  padding: 24px;
+}
+```
+
+这里 `.profile-card` 就是选择器。它会选中 HTML 里 `class` 包含 `profile-card` 的元素。
+
+常见选择器读法：
+
+| 写法 | 人话解释 |
+|---|---|
+| `p` | 找到所有 `p` 标签 |
+| `.card` | 找到所有 class 包含 `card` 的元素 |
+| `#app` | 找到 id 是 `app` 的元素 |
+| `.card p` | 找到 `.card` 里面的所有 `p` |
+| `.card > p` | 找到 `.card` 的直接子元素 `p` |
+| `input[type="text"]` | 找到 type 是 text 的输入框 |
+
+### declaration：声明
+
+声明就是 `{}` 里面的一条样式。
+
+```css
+color: #0969da;
+```
+
+一条声明由 `属性: 值;` 组成。注意最后的分号建议保留，尤其是多条声明连续写的时候。
+
+### property：属性
+
+属性回答的问题是：你想改元素的哪一类表现？
+
+常见属性：
+
+```css
+color
+font-size
+background
+margin
+padding
+display
+position
+```
+
+比如 `color` 改文字颜色，`display` 改布局角色，`position` 改定位方式。
+
+### value：值
+
+值回答的问题是：这个属性具体改成什么？
+
+```css
+color: red;
+display: flex;
+position: absolute;
+margin: 16px;
+```
+
+这里的 `red`、`flex`、`absolute`、`16px` 都是值。CSS 学起来像背单词，其实真正要问的是：这个值会改变浏览器哪一步计算？
+
+### rule：规则
+
+一组选择器加声明块，叫一条 CSS 规则。
+
+```css
+.button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: #0969da;
+}
+```
+
+这整段就是一条规则。
+
+### comment：注释
+
+```css
+/* 这是 CSS 注释 */
+```
+
+CSS 注释不会显示在页面上，适合解释分区、变量用途、复杂布局原因。
+
+> [!warning] CSS 不会像 JavaScript 那样频繁报错
+> 属性名写错或值非法时，浏览器通常直接忽略那条声明。所以看到样式不生效，第一步不是怀疑浏览器，而是去 DevTools 看这条声明有没有被识别。
+
 ## 三种引入方式
 
 ### 1. 行内样式
@@ -63,6 +157,14 @@ description: 理解 CSS 的职责、语法结构、三种引入方式、基础�
 > [!warning] 不要把行内样式当主力
 > 行内样式会让 HTML 和样式混在一起，后期改版时很痛苦。真正项目里，优先写到独立 CSS 文件或组件样式里。
 
+关键词认知：
+
+| 关键词 | 含义 |
+|---|---|
+| `style` | HTML 属性，里面直接写 CSS 声明 |
+| `inline style` | 行内样式，写在元素自己身上 |
+| `priority` | 优先级，行内样式通常比普通选择器更强 |
+
 ### 2. 内部样式表
 
 ```html
@@ -75,6 +177,13 @@ description: 理解 CSS 的职责、语法结构、三种引入方式、基础�
 
 适合小 demo、教学案例、单文件页面。缺点是多个页面无法复用。
 
+关键词认知：
+
+| 关键词 | 含义 |
+|---|---|
+| `<style>` | HTML 标签，用来在页面内部写 CSS |
+| internal stylesheet | 内部样式表，样式只属于当前 HTML 页面 |
+
 ### 3. 外部样式表
 
 ```html
@@ -82,6 +191,18 @@ description: 理解 CSS 的职责、语法结构、三种引入方式、基础�
 ```
 
 这是项目主流方式。HTML 放结构，CSS 独立维护，多个页面可以复用同一个样式文件。
+
+关键词认知：
+
+| 关键词 | 含义 |
+|---|---|
+| `<link>` | HTML 标签，用来引入外部资源 |
+| `rel="stylesheet"` | 告诉浏览器这个资源是样式表 |
+| `href` | CSS 文件路径 |
+| external stylesheet | 外部样式表，项目里最常用 |
+
+> [!danger] 外部样式最常见坑
+> `href` 路径错了，CSS 文件根本没加载。打开 DevTools 的 Network 面板，如果 CSS 是 404，再怎么改选择器都没用。
 
 ## 第一个完整例子
 
@@ -169,4 +290,3 @@ CSS：
 ## 一句话总结
 
 > CSS 的第一步不是背属性，而是理解“选择器命中元素，声明改变表现，浏览器计算最终样式”。
-

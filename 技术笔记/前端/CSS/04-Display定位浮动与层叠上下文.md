@@ -38,6 +38,80 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
 }
 ```
 
+## display 关键字认知
+
+> [!info] display 回答两个问题
+> 第一，这个元素自己怎么占位置；第二，它的直接子元素怎么排列。
+
+### block
+
+块级元素，默认独占一行，宽度通常撑满父容器，可以设置宽高。
+
+```css
+.section {
+  display: block;
+}
+```
+
+常见块级元素有 `div`、`p`、`section`、`h1`。
+
+### inline
+
+行内元素，像文字一样在一行里流动，不独占一行，宽高通常不生效。
+
+```css
+.link {
+  display: inline;
+}
+```
+
+常见行内元素有 `span`、`a`、`strong`。
+
+### inline-block
+
+外面像行内元素，可以和别人排一行；里面像块级元素，可以设置宽高和 padding。
+
+```css
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+}
+```
+
+适合标签、徽章、小按钮。
+
+### none
+
+元素不显示，也不占空间。
+
+```css
+.hidden {
+  display: none;
+}
+```
+
+对比：
+
+| 写法 | 是否显示 | 是否占空间 |
+|---|---|---|
+| `display: none` | 不显示 | 不占 |
+| `visibility: hidden` | 不显示 | 占 |
+| `opacity: 0` | 透明 | 占 |
+
+### flex / grid
+
+`display: flex` 和 `display: grid` 不只是让元素显示，它们会把这个元素变成布局容器，直接影响子元素排列。
+
+```css
+.toolbar {
+  display: flex;
+}
+
+.cards {
+  display: grid;
+}
+```
+
 ## 普通文档流
 
 默认情况下，元素按 HTML 顺序从上到下、从左到右排列。块级元素一行一个，行内元素在一行内流动。
@@ -56,6 +130,8 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
 
 默认值，不支持 `top`、`right`、`bottom`、`left`。
 
+关键词认知：`static` 就是“按正常文档流排”。你写 `top: 10px` 也不会动。
+
 ### relative
 
 相对自己原来的位置偏移，但原位置仍然保留。
@@ -68,6 +144,8 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
 ```
 
 常用场景：作为绝对定位子元素的参照物。
+
+关键词认知：`relative` 没有真正把元素从队伍里拿走，它只是视觉上偏移；原来的坑位还在那里。
 
 ### absolute
 
@@ -88,6 +166,8 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
 > [!warning] absolute 最常见坑
 > 父元素忘记写 `position: relative`，导致子元素跑到页面别的位置。
 
+关键词认知：`absolute` 会脱离普通文档流。它不再占原来的位置，后面的元素会当它不存在。
+
 ### fixed
 
 相对浏览器视口定位，常用于固定顶部导航、悬浮按钮、全屏遮罩。
@@ -99,6 +179,8 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
   background: rgba(0, 0, 0, 0.45);
 }
 ```
+
+关键词认知：`fixed` 盯着浏览器窗口，不盯着某个普通父元素。页面滚动时它仍停在视口里的固定位置。
 
 ### sticky
 
@@ -112,6 +194,8 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
   background: #ffffff;
 }
 ```
+
+关键词认知：`sticky` 是 `relative` 和 `fixed` 的混合体。没滚到阈值时像普通元素，滚到 `top: 0` 这类阈值时吸住。
 
 ## `inset`
 
@@ -149,6 +233,17 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
 
 > [!danger] `z-index: 9999` 也可能没用
 > 如果元素被困在一个新的层叠上下文里，它再大也只能在那个上下文内部比较，无法盖过外部更高层的元素。
+
+关键词认知：
+
+| 关键词 | 含义 |
+|---|---|
+| `z-index` | 在 z 轴上的层级顺序 |
+| stacking context | 层叠上下文，一个内部独立比较层级的区域 |
+| `opacity` | 小于 1 时可能创建层叠上下文 |
+| `transform` | 非 none 时可能创建层叠上下文 |
+
+排查弹窗盖不住时，不要只盯着弹窗的 `z-index`，要一路看父元素有没有 `transform`、`opacity`、`position + z-index`。
 
 ## 层叠上下文
 
@@ -216,6 +311,26 @@ BFC 是块级格式化上下文，可以理解为一个独立的布局区域。
 }
 ```
 
+## overflow 关键字认知
+
+`overflow` 决定内容超出盒子时怎么办。
+
+```css
+.panel {
+  overflow: auto;
+}
+```
+
+| 值 | 含义 |
+|---|---|
+| `visible` | 默认，超出也显示 |
+| `hidden` | 超出裁掉 |
+| `auto` | 需要时出现滚动条 |
+| `scroll` | 总是显示滚动条 |
+
+> [!warning] overflow 会影响布局
+> `overflow: hidden` 可以裁剪内容、创建 BFC，但也可能让下拉菜单、阴影、sticky 吸顶出现问题。它不是万能修复。
+
 ## 本章练习
 
 1. 写一个卡片右上角徽标，用 `absolute` 定位。
@@ -227,4 +342,3 @@ BFC 是块级格式化上下文，可以理解为一个独立的布局区域。
 ## 一句话总结
 
 > `display` 决定元素怎么参与布局，`position` 决定它是否离开原位置，层叠上下文决定它能和谁比较层级。
-
