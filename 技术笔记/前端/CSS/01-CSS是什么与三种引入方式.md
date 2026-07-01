@@ -14,6 +14,24 @@ description: 理解 CSS 的职责、语法结构、三种引入方式、基础�
 > [!tip] 先建立一句话模型
 > HTML 负责内容结构，CSS 负责视觉表现，JavaScript 负责交互逻辑。CSS 的本质是：找到一批元素，然后给它们声明样式规则。
 
+## 图解：CSS 从文件到屏幕
+
+```mermaid
+flowchart LR
+    A["HTML 结构"] --> B["link 或 style 引入 CSS"]
+    B --> C["浏览器读取 CSS 规则"]
+    C --> D["选择器 selector 找元素"]
+    D --> E["声明 declaration 改样式"]
+    E --> F["生成 CSSOM"]
+    F --> G["DOM + CSSOM 生成渲染树"]
+    G --> H["布局 layout"]
+    H --> I["绘制 paint"]
+    I --> J["屏幕上看到页面"]
+```
+
+> [!info] 看图理解
+> CSS 不是直接“画页面”，它先被浏览器解析成规则，再和 HTML 结构结合，最后才经过布局和绘制显示到屏幕。
+
 ## CSS 解决什么问题
 
 没有 CSS 时，页面只有结构：标题、段落、列表、链接、图片、表单。CSS 加上去以后，页面才有颜色、字体、间距、布局、响应式和动画。

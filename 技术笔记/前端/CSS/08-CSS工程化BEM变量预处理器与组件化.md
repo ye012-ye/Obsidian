@@ -14,6 +14,30 @@ description: 掌握 CSS 命名、BEM、CSS 变量、主题、预处理器、组�
 > [!tip] 工程化解决的不是“能不能写”，而是“多人长期改会不会乱”
 > 小 demo 可以随便写 CSS。真实项目里，难点是命名冲突、样式覆盖、主题统一、组件复用、长期维护。
 
+## 图解：可维护 CSS 的分层
+
+```mermaid
+flowchart TD
+    A["tokens 设计令牌"] --> B["base 基础样式"]
+    B --> C["components 组件样式"]
+    C --> D["pages 页面样式"]
+    D --> E["utilities 少量工具类"]
+    A --> A1["颜色、字号、间距、圆角"]
+    C --> C1["Button、Card、Modal"]
+    D --> D1["Dashboard、Profile、Login"]
+```
+
+```mermaid
+flowchart LR
+    A[".card"] --> B[".card__title"]
+    A --> C[".card__body"]
+    A --> D[".card__footer"]
+    A --> E[".card--featured"]
+```
+
+> [!info] 看图理解
+> CSS 工程化不是把样式写复杂，而是让变量有来源、组件有边界、页面有组织、工具类有节制。
+
 ## 样式混乱的典型症状
 
 1. class 名太随意：`.red`、`.left`、`.box1`。

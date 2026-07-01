@@ -14,6 +14,34 @@ description: 掌握 Flex 主轴交叉轴、对齐、换行、伸缩、常见页�
 > [!tip] Flex 的核心
 > Flex 是一维布局系统，擅长处理一行或一列里的空间分配、对齐、居中、换行。只要你在想“这几个东西怎么横着排、竖着排、平均分、靠右、居中”，优先想到 Flex。
 
+## 图解：Flex 主轴和交叉轴
+
+```mermaid
+flowchart TD
+    A["display: flex"] --> B["先确定 flex-direction"]
+    B --> C["row：主轴横向"]
+    B --> D["column：主轴纵向"]
+    C --> E["justify-content 管横向分布"]
+    C --> F["align-items 管纵向对齐"]
+    D --> G["justify-content 管纵向分布"]
+    D --> H["align-items 管横向对齐"]
+```
+
+```text
+row 时：
+主轴 main axis      ───────────────▶
+交叉轴 cross axis   │
+                   ▼
+
+column 时：
+主轴 main axis      │
+                   ▼
+交叉轴 cross axis   ───────────────▶
+```
+
+> [!info] 看图理解
+> Flex 最容易混的是 `justify-content` 和 `align-items`。不要背“水平/垂直”，要看当前主轴是哪一个方向。
+
 ## 开启 Flex
 
 ```css
@@ -40,12 +68,13 @@ Flex 先确定主轴，再处理交叉轴。
 }
 ```
 
-| `flex-direction` | 主轴 |
-|---|---|
-| `row` | 从左到右 |
-| `row-reverse` | 从右到左 |
-| `column` | 从上到下 |
+| `flex-direction` | 主轴   |
+| ---------------- | ---- |
+| `row`            | 从左到右 |
+| `row-reverse`    | 从右到左 |
+| `column`         | 从上到下 |
 | `column-reverse` | 从下到上 |
+
 
 ## Flex 关键字认知
 
@@ -92,14 +121,14 @@ Flex 子项，也就是 Flex 容器的直接子元素。
 
 常用值：
 
-| 值 | 效果 |
-|---|---|
-| `flex-start` | 靠主轴起点 |
-| `center` | 居中 |
-| `flex-end` | 靠主轴终点 |
-| `space-between` | 两端贴边，中间均分 |
-| `space-around` | 每个元素两侧都有空间 |
-| `space-evenly` | 所有间距完全相等 |
+| 值               | 效果         |
+| --------------- | ---------- |
+| `flex-start`    | 靠主轴起点      |
+| `center`        | 居中         |
+| `flex-end`      | 靠主轴终点      |
+| `space-between` | 两端贴边，中间均分  |
+| `space-around`  | 每个元素两侧都有空间 |
+| `space-evenly`  | 所有间距完全相等   |
 
 关键词认知：`justify-content` 永远管主轴。不要死记“水平居中”，因为当 `flex-direction: column` 时，主轴变成纵向，它就管上下分布。
 
@@ -114,13 +143,13 @@ Flex 子项，也就是 Flex 容器的直接子元素。
 
 常用值：
 
-| 值 | 效果 |
-|---|---|
-| `stretch` | 默认拉伸 |
+| 值            | 效果     |
+| ------------ | ------ |
+| `stretch`    | 默认拉伸   |
 | `flex-start` | 靠交叉轴起点 |
-| `center` | 交叉轴居中 |
-| `flex-end` | 靠交叉轴终点 |
-| `baseline` | 基线对齐 |
+| `center`     | 交叉轴居中  |
+| `flex-end`   | 靠交叉轴终点 |
+| `baseline`   | 基线对齐   |
 
 关键词认知：`align-items` 永远管交叉轴。常见的“图标和文字垂直居中”，通常就是在横向 Flex 容器上写 `align-items: center`。
 

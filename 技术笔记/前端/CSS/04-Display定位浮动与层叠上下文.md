@@ -14,6 +14,29 @@ description: 理解 display、文档流、position、z-index、浮动、BFC 和�
 > [!tip] 布局先问三个问题
 > 这个元素是否占一整行？它是否还在普通文档流里？它的层级是否被新的层叠上下文限制？多数布局问题都能从这三个问题开始排查。
 
+## 图解：display、position、z-index 的分工
+
+```mermaid
+flowchart TD
+    A["元素怎么排版"] --> B["display"]
+    B --> B1["block 独占一行"]
+    B --> B2["inline 行内流动"]
+    B --> B3["flex 一维布局"]
+    B --> B4["grid 二维布局"]
+    A --> C["元素相对谁定位"]
+    C --> C1["static 正常文档流"]
+    C --> C2["relative 原位置偏移"]
+    C --> C3["absolute 相对定位祖先"]
+    C --> C4["fixed 相对视口"]
+    C --> C5["sticky 滚动吸附"]
+    A --> D["谁盖住谁"]
+    D --> D1["z-index"]
+    D --> D2["层叠上下文"]
+```
+
+> [!info] 看图理解
+> `display` 管“怎么参与布局”，`position` 管“相对谁移动”，`z-index` 管“层级比较”。三个问题要分开看。
+
 ## `display`
 
 常见值：

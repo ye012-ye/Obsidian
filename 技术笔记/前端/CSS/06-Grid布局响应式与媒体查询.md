@@ -15,6 +15,31 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 > [!tip] Grid 的核心
 > Grid 是二维布局系统，适合同时处理行和列。页面骨架、仪表盘、卡片网格、图片墙、表单排版，都很适合 Grid。
 
+## 图解：Grid 先画格子再放内容
+
+```mermaid
+flowchart TD
+    A["display: grid"] --> B["定义列 grid-template-columns"]
+    A --> C["定义行 grid-template-rows"]
+    B --> D["形成二维网格"]
+    C --> D
+    D --> E["子元素按网格自动放置"]
+    D --> F["也可以用 grid-area 指定区域"]
+    E --> G["适合卡片墙、表单、页面骨架"]
+```
+
+```text
+三列 Grid：
+┌────────┬────────┬────────┐
+│ card 1 │ card 2 │ card 3 │
+├────────┼────────┼────────┤
+│ card 4 │ card 5 │ card 6 │
+└────────┴────────┴────────┘
+```
+
+> [!info] 看图理解
+> Flex 像“排一队”，Grid 像“画表格”。只要你同时关心横向和纵向对齐，就优先考虑 Grid。
+
 ## 开启 Grid
 
 ```css
@@ -28,11 +53,11 @@ description: 掌握 Grid 二维布局、fr、repeat、minmax、auto-fit、媒体
 ## 定义列
 
 ```css
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-}
+	.cards {
+	  display: grid;
+	  grid-template-columns: 1fr 1fr 1fr;
+	  gap: 16px;
+	}
 ```
 
 `fr` 表示剩余空间份额。`1fr 1fr 1fr` 就是三等分。
